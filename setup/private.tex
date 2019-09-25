@@ -1,0 +1,133 @@
+% ========字节结构的宏包========= 
+\usepackage{bytefield}
+
+% ========排版键盘组合和菜单的宏包=========
+\usepackage[os=win]{menukeys}
+
+% ========排版代码的宏包=========
+\usepackage{minted}
+% =========解决minted包排版代码的跨页问题=========
+\usepackage[linecolor=black, topline=true, bottomline=true,
+leftline=false, rightline=false,
+backgroundcolor=yellow!20!white]{mdframed}
+
+% ========定义minted宏包专用于C语言代码的命令========
+%%%% 灰色
+\definecolor{listinggray}{gray}{0.92}
+%%%% 定义C语言代码参数
+\setminted{fontsize=\small, breaklines=true,
+  breakautoindent=false, autogobble}
+\newmintinline{c}{fontsize=\normalsize}
+\newminted{c}{bgcolor=yellow!20!white, frame=lines}
+\newmintinline[cintt]{c}{escapeinside=||, fontsize=\normalsize}
+\newminted[ctt]{c}{bgcolor=yellow!20!white, escapeinside=||, frame=lines}
+\newmintedfile{c}{linenos=true}
+
+%%%% 定义shell脚本语言代码参数
+\newmintinline{shell}{fontsize=\normalsize}
+\newminted[shell]{sh}{autogobble,fontsize=\small, frame=lines}
+
+%%%% 定义makefile代码参数
+\newmintinline{basemake}{fontsize=\normalsize}
+\newmintinline[makefileinline]{basemake}{fontsize=\normalsize,escapeinside=!!}
+\newminted{basemake}{mathescape,
+  autogobble,fontsize=\small,frame=lines}
+\newminted[makefilett]{basemake}{mathescape,
+  autogobble,fontsize=\small,frame=lines,escapeinside=!!}
+\newmintedfile{basemake}{linenos=true}
+
+% ========定义TiKz宏包用于绘制流程图的样式========
+\def\smbwd{2cm}        
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=\smbwd,
+    minimum height=0.5cm,text centered, align=center, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=\smbwd,
+    minimum height=0.5cm, text centered, align=center, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=\smbwd,
+    minimum height=0.5cm, text centered, align=center, draw=black, fill=orange!10]
+\tikzstyle{decision} = [diamond, minimum width=\smbwd,
+    minimum height=0.5cm, text centered, align=center, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\tikzstyle{rectpro} = [rectangle, minimum width=2.5cm, text centered,
+align=center, draw=black]
+
+% =======定义TiKz宏包用于绘制链表数据结构的样式========
+\tikzstyle{ptr}  = [draw, -latex']
+\tikzstyle{head} = [rectangle, draw, text height=3mm, text width=3mm, text centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{data} = [rectangle split, rectangle split parts=2, draw,
+text centered, minimum height=3em]
+
+%% 自定义命令
+% =========================================================
+%%%%%%%%%% 绘制链表数据结构需要的命令%%%%%%%%
+\newcommand{\data}{data \nodepart{second} \phantom{null}}
+
+% 用于绘制无标记内存图中一个内存块的命令，其开始地址在底部，结束地址在顶部
+% 语法:
+% \memsec{结束地址}{开始地址}{以行为单位的高度}{盒子中的文字}
+\newcommand*\istempaddr[1]{\IfStrEq{}{#1}{}{0X#1}}
+\newcommand{\memsec}[4]{%
+  % 定义memsection的高度
+  \bytefieldsetup{bitheight=#3\baselineskip}%
+  \bitbox[]{10}{%
+    \texttt{\istempaddr{#1}}%0X#1}% 结束地址
+    \\
+    % 留出空白
+    \vspace{#3\baselineskip}
+    \vspace{-1.5\baselineskip}
+    \vspace{-#3pt}
+    \texttt{\istempaddr{#2}}%0X#2}% 开始地址
+  }%
+  \bitbox{16}{#4}% 盒子里的内容
+}
+
+% 定义绘制有标记内存的命令（基于bytefield宏包）
+% 创建计算机内存映像的自定义命令，
+% 起始地址位于低部，结束地址位于顶部
+% 语法：
+% \memsection[标记符号]{结束地址}{起始地址}{内存单元高度}{内存单元中的内容}
+% 其中标记符号为可选项，可以是任何符合LaTeX语法的内容
+\newcommand{\memsection}[5][]{
+  \bytefieldsetup{bitheight=#4\baselineskip} % 内存单元的高度
+  \bitbox[]{16}{%标记符号及地址盒子，参数为总宽度
+    \raggedleft%右对齐
+    \texttt{\istempaddr{#2}}% 结束地址
+    \\%换行
+    % 设置结束地址与起始地址之间的空白
+    \vspace{#4\baselineskip}
+    \vspace{-2\baselineskip}
+    \vspace{-#4pt} % 
+    \texttt{#1}\hspace{1em}
+    \texttt{\istempaddr{#3}}% 起始地址
+  }~
+  \bitbox{16}{#5} % 内存单元盒子
+}
+
+% 绘制内存逻辑结构图时用到的命令
+\newcommand\memcontent[2][2cm]{%%' 
+  \begin{minipage}{#1}
+    \centering
+    #2
+  \end{minipage}}
+% =========================================================
+%%%% C语言专有名词
+\newcommand{\cb}{\texttt{Code::Blocks}}
+\newcommand{\mww}{\texttt{MinGW-w64}}
+\newcommand{\vs}{\texttt{Visual Studio}}
+\newcommand{\db}{\texttt{DEBUG}}
+\newcommand{\dbger}{\texttt{Debugger}}
+\newcommand{\mfile}{\qtmark{\texttt{Makefile}}}
+\newcommand{\gdb}{\texttt{gdb}调试器}
+\newcommand{\cdb}{\texttt{cdb}调试器}
+\newcommand{\gdbcmd}{\texttt{(gdb)}}
+\newcommand{\bug}{\texttt{BUG}}
+\newcommand{\ieee}{\texttt{IEEE} 754标准}
+% =========================================================
+%%%% 微分标志符号
+\DeclareMathOperator\dif{d\!}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master:"../main.tex"
+%%% End:

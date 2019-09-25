@@ -1,0 +1,71 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[scheme=chinese, heading = true, UTF8]{ctexart}
+
+% 载入需要的宏包
+\input{setup/packages.tex}
+% 进行必要的设置
+\input{setup/format.tex}
+% 专用宏包及设置
+\input{setup/private.tex}
+
+%%%% 导言区结束
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 设置公共信息
+\kcmc{C语言程序设计} %课程名称
+\jsxm{耿楠} %教师姓名
+\jyzr{张志毅}    %教研室主任
+\jcmc{《C语言程序设计》}%教材
+\cksm{《XXXXXXXXXX》}%参考书
+\skbc{17级计算机}%授课班次
+\dybt{理论课}%标题头
+\jxdw{\cie}%教学单位, \cie 信息工程学院（参见format.tex中的院/系命令定义）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% 正文区
+\begin{document}
+
+%%%% 封面
+\begin{titlepage}
+  \begin{center}
+    { \yihao \bf
+      \makebox[10cm][s]{\nwsuaf}  \\
+      \makebox[10cm][s]{\cie} \\
+    }
+    \vfill
+    { \yihao \fangsong \fontsize{46pt}{80pt}
+      \selectfont
+      教\par
+      案\par%本\par
+    }
+    \par
+    \vfill \vfill \sihao
+    \setlength{\baselineskip}{1cm}
+    \bf
+    授课教师：\underline{\makebox[5cm]{\jsxmNR}}\par
+    授课课程：\underline{\makebox[5cm]{\kcmcNR}}\par
+    授课班级：\underline{\makebox[5cm]{\skbcNR}}\vfill
+    {\bf 2017 }$\sim$ {\bf 2018}学年\hspace{0.5cm} 第~{\bf 一}~学期
+  \end{center}
+  \vfill
+\end{titlepage}
+
+\newpage
+\restoregeometry
+\newpage
+
+\tableofcontents
+\setcounter{page}{-0}
+\thispagestyle{empty}
+
+%%%% 设置为小四号字
+\xiaosi
+
+%%%% 建议各讲内容分别存储在一个独立的tex文件中，以便分类编写和管理
+\include{data/sec1}%第1讲
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

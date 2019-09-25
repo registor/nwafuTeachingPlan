@@ -1,0 +1,363 @@
+% ========载入tikz功能增强模块========
+\usetikzlibrary{matrix,backgrounds}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows.meta,arrows}
+\usetikzlibrary{automata,snakes}
+\usetikzlibrary{mindmap}
+
+% ========页眉页脚风格========
+\pagestyle{plain}
+% ========有时会出现\headheight too small的warning========
+\setlength{\headheight}{15pt}
+
+% ========设定目录深度========
+\setcounter{tocdepth}{1}%
+
+% ========设定标题(应该修改为用ctexsetup命令设置)========
+\setcounter{secnumdepth}{5}
+\titleformat{\section}{\centering\sanhao}{\heiti \dybtNR\thesection}{1em}{\heiti}
+\titleformat{\subsection}{\xiaosi}{\hskip -2pt \Roman{subsection}}{1em}{\heiti}
+\titleformat{\subsubsection}{\xiaosi}{\heiti\zhnumber{\arabic{subsubsection}}、}{1em}{\textbf}
+\titleformat{\paragraph}{\xiaosi}{\arabic{paragraph}、}{1em}{}
+\titleformat{\subparagraph}{\xiaosi}{(\arabic{subparagraph})}{1em}{}
+%调整标题间距
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\paragraph}{0pt}{*0}{*0}
+\titlespacing{\subparagraph}{0pt}{*0}{*0}
+ 
+% ========给左旁注黑圆点========
+\usepackage{wasysym}
+\let\marginparNR\marginpar
+\def\marginpar#1{\marginparNR{ \CIRCLE{}   #1  }}
+
+% ========调整列表前后的间距========
+\makeatletter
+\let\orig@Enumerate=\enumerate
+\renewenvironment{enumerate}{\orig@Enumerate}{\vspace{-0.5cm}\endlist}
+\let\orig@Itemize=\itemize
+\renewenvironment{itemize}{\orig@Itemize}{\vspace{-0.5cm}\endlist}
+\makeatother
+
+%% 设定段间距
+\setlength{\parskip}{0.3\baselineskip}
+
+%% 设定行距
+\linespread{1}
+
+% ========用tikz画边框========  
+\def\biankuang{\leavevmode\vbox to0pt{
+                \vss\rlap{\hskip 0.8cm
+                \tikz \draw(4,0)--(0,0)--(0,-22.1)--(16.7,-22.1)--(16.7,0)--(4,0)--(4,-22.1);           
+                }\vskip -22.4cm}}
+
+% ========定义表格列格式符========            
+\newcolumntype{M}[1]{>{\sihao \centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+% ========设定floatrow增强包中插图浮动体参数========
+\floatsetup[figure]{objectset=centering, margins=centering}%
+
+% ========设定浮动体计数器范围========
+\numberwithin{table}{section}
+\numberwithin{figure}{section}
+
+% ========设置图表引用标记=======
+\labelformat{figure}{\figurename#1}
+\labelformat{table}{\tablename#1}
+\labelformat{subfigure}{\figurename\thefigure#1}
+
+% ========设置插图路径========
+\graphicspath{{figures/}}
+
+%% 自定义命令
+% =========================================================
+%%%% 设置常用字体字号，与MS Word相对应
+%% 一号, 1.4倍行距
+\newcommand{\yihao}{\fontsize{26pt}{36pt}\selectfont}
+%% 二号, 1.25倍行距
+\newcommand{\erhao}{\fontsize{22pt}{28pt}\selectfont}
+%% 小二, 单倍行距
+\newcommand{\xiaoer}{\fontsize{18pt}{18pt}\selectfont}
+%% 三号, 1.5倍行距
+\newcommand{\sanhao}{\fontsize{16pt}{24pt}\selectfont}
+%% 小三, 1.5倍行距
+\newcommand{\xiaosan}{\fontsize{15pt}{22pt}\selectfont}
+%% 四号, 1.5倍行距
+\newcommand{\sihao}{\fontsize{14pt}{21pt}\selectfont}
+%% 半四, 1.5倍行距
+\newcommand{\bansi}{\fontsize{13pt}{19.5pt}\selectfont}
+%% 小四, 1.5倍行距
+\newcommand{\xiaosi}{\fontsize{12pt}{18pt}\selectfont}
+%% 大五, 单倍行距
+\newcommand{\dawu}{\fontsize{11pt}{11pt}\selectfont}
+%% 五号, 单倍行距
+\newcommand{\wuhao}{\fontsize{10.5pt}{10.5pt}\selectfont}
+% =========================================================
+%%%% 专有名称
+\newcommand{\kcmc}[1]{\gdef\kcmcNR{#1}}%课程名称
+\newcommand{\dymc}[1]{\gdef\dymcNR{#1}}%授课单元名称
+\newcommand{\xqfx}[1]{\gdef\xqfxNR{#1}}%学情分析
+\newcommand{\jxmb}[1]{\gdef\jxmbNR{#1}}%教学目标
+\newcommand{\jxnd}[1]{\gdef\jxndNR{#1}}%教学难点
+\newcommand{\jxzd}[1]{\gdef\jxzdNR{#1}}%教学重点
+\newcommand{\jxff}[1]{\gdef\jxffNR{#1}}%教学方法
+\newcommand{\jxhj}[1]{\gdef\jxhjNR{#1}}%教学后记
+
+\newcommand{\jcmc}[1]{\gdef\jcmcNR{#1}}%教材名称
+\newcommand{\cksm}[1]{\gdef\cksmNR{#1}}%参考书名称
+\newcommand{\jsxm}[1]{\gdef\jsxmNR{#1}}%教师姓名
+\newcommand{\jyzr}[1]{\gdef\jyzrNR{#1}}%教研室主任
+\newcommand{\jxdy}[1]{\gdef\jxdyNR{#1}}%教研单元
+\newcommand{\jxzc}[1]{\gdef\jxzcNR{#1}}%教师周次
+\newcommand{\jcks}[1]{\gdef\jcksNR{#1}}%教材开始页
+\newcommand{\jcjs}[1]{\gdef\jcjsNR{#1}}%教材结束页
+\newcommand{\ckks}[1]{\gdef\ckksNR{#1}}%参考书开始页
+\newcommand{\ckjs}[1]{\gdef\ckjsNR{#1}}%参考书结束页
+
+
+\newcommand{\skbc}[1]{\gdef\skbcNR{#1}}%授课班次
+\newcommand{\skrq}[1]{\gdef\skrqNR{#1}}%授课日期
+\newcommand{\dybt}[1]{\gdef\dybtNR{#1}}%授课单元标题
+
+\newcommand{\jxdw}[1]{\gdef\jxdwNR{#1}}%教学单位(院/系)
+% =========================================================
+%%%% 教案首页表格（参考高星的代码：https://github.com/gnixoag/myjiaoan）
+\newcounter{thesectionSY}
+\newcommand{\makeshouye}{
+        \setcounter{thesectionSY}{\thesection+1}
+        \restoregeometry        
+        \renewcommand{\headrulewidth}{0pt}
+        \pagestyle{fancy}
+        \fancyhead{}
+        \lhead{} 
+        \chead{
+                \begin{tabular}{@{\hspace{1.2cm}}M{7cm}@{\hspace{-0.4cm}}M{8cm}N}
+                        \parbox{7cm}{\linespread{0.2}
+                                \makebox[7cm][s]{\kaishu \sanhao \nwsuaf }\\ 
+                                \makebox[7cm][s]{\kaishu \sanhao \jxdwNR }
+                        }
+                        &  \makebox[6cm][s]{\rule{0pt}{0.9cm}\yihao \heiti 授课计划}\\
+                \end{tabular}
+        }
+        
+        \begin{tabular}{M{2.2cm}|M{7cm}|M{5.8cm}N}
+          \hline
+          \multirow{2}*{
+          \rule{0pt}{1.4cm}\parbox[b]{2.cm}{
+          \centering 课\hfill 程\hfill 性\hfill
+          质\\及\hfill 主\hfill 题}}& \heiti \dybtNR% \thethesectionSY
+          &  ~授~课~单~元：\hfill {\heiti \sihao \underline{第 \jxdyNR
+            单元}}\hfill~~~&\\[0.6cm] \cline{2-3}%\hfill 签字
+          & \heiti \dymcNR &  ~授~课~周~次：\hfill {\heiti \sihao
+            \underline{第 \hspace{0.65\ccwd}\jxzcNR \hspace{0.65\ccwd}周}}\hfill~~~&\\[0.3cm]\hline%\hfill 签字
+
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{15cm}%[t][2.0cm]    
+            \begin{minipage}[t]{2.5cm}
+              \vspace{6pt} \hfill \heiti \sihao 学情分析：
+            \end{minipage}\hspace{0.5cm}
+            \begin{minipage}[t]{12cm}%[t][1.5cm]
+              \vspace{0pt}\sihao \setlength{\baselineskip}{12pt}
+              \begin{enumerate}[1、]
+                \xqfxNR
+              \end{enumerate}
+            \end{minipage}
+          \end{minipage}
+          }\vspace{0.35cm} &\\ %\hline
+          
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{15cm}%[t][2.0cm]  
+            \begin{minipage}[t]{2.5cm}
+              \vspace{6pt} \hfill \heiti \sihao 教学目标：
+            \end{minipage}\hspace{0.5cm}
+            \begin{minipage}[t]{12cm}%[t][1.5cm]
+              \vspace{0pt}\sihao \setlength{\baselineskip}{12pt}
+              \begin{enumerate}[1、]
+                \jxmbNR
+              \end{enumerate}
+            \end{minipage}
+          \end{minipage}
+          }\vspace{0.35cm} &\\ %\hline
+
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{15cm}%[t][2.0cm]  
+            \begin{minipage}[t]{2.5cm}
+              \vspace{6pt} \hfill \heiti \sihao 教学重点：
+            \end{minipage}\hspace{0.5cm}
+            \begin{minipage}[t]{12cm}%[t][1.5cm]
+              \vspace{0pt}\sihao \setlength{\baselineskip}{12pt}
+              \begin{enumerate}[1、]
+                \jxzdNR
+              \end{enumerate}
+            \end{minipage}
+          \end{minipage}
+          }\vspace{0.35cm} &\\ %\hline
+
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{15cm}%[t][2.0cm]    
+            \begin{minipage}[t]{2.5cm}
+              \vspace{6pt} \hfill \heiti \sihao 教学难点：
+            \end{minipage}\hspace{0.5cm}
+            \begin{minipage}[t]{12cm}%[t][1.5cm]
+              \vspace{0pt}\sihao \setlength{\baselineskip}{12pt}
+              \begin{enumerate}[1、]
+                \jxndNR
+              \end{enumerate}
+            \end{minipage}
+          \end{minipage}
+          }\vspace{0.35cm} &\\ %\hline
+
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{15cm}%[t][2.0cm]    
+            \begin{minipage}[t]{2.5cm}
+              \vspace{6pt} \hfill \heiti \sihao 教学方法：
+            \end{minipage}\hspace{0.5cm}
+            \begin{minipage}[t]{12cm}%[t][1.5cm]
+              \vspace{0pt}\sihao \setlength{\baselineskip}{12pt}
+              \begin{enumerate}[1、]
+                \jxffNR
+              \end{enumerate}
+            \end{minipage}
+          \end{minipage}
+          }\vspace{0.7cm} &\\ \hline
+          
+          % \multicolumn{3}{l}{
+          % \begin{minipage}[t][5cm][t]{15cm}
+          %   \begin{minipage}[t]{2.5cm}
+          %     \vspace{5pt} \hfill \sihao 教学重点：
+          %   \end{minipage}\hspace{0.5cm}
+          %   \begin{minipage}[t]{12cm}
+          %     \vspace{0pt} \sihao \setlength{\baselineskip}{12pt}
+          %     \begin{enumerate}[1、] \jxzdNR \end{enumerate}
+          %     \vspace{7pt}
+          %   \end{minipage}
+          %   \vspace{5pt}
+          %   % \hline
+          %   \begin{minipage}[t]{2.5cm}
+          %     \vspace{6pt} \hfill \sihao 教学难点：
+          %   \end{minipage}\hspace{0.5cm}
+          %   \begin{minipage}[t]{12cm}
+          %     \vspace{0pt} \sihao \setlength{\baselineskip}{12pt}
+          %     \begin{enumerate}[1、] \jxndNR \end{enumerate}
+          %     \vspace{0pt}
+          %   \end{minipage}
+          %   \begin{minipage}[t]{2.5cm}
+          %     \vspace{6pt} \hfill \sihao 教学方法：
+          %   \end{minipage}\hspace{0.5cm}
+          %   \begin{minipage}[t]{12cm}
+          %     \vspace{0pt} \sihao \setlength{\baselineskip}{12pt}
+          %     % \vspace{6pt}\sihao \jjffNR
+          %     \begin{enumerate}[1、] \jjffNR \end{enumerate}
+          %   \end{minipage}
+                                
+          %               \end{minipage}
+          %             } &\\  \hline
+
+          \multirow{2}*{  \rule{0pt}{1.4cm}\parbox[b]{2.cm}{
+          \centering 教\hfill 材\hfill 和\\参\hfill 考\hfill 书 } } &
+                     \multicolumn{2}{c}{\sihao \jcmcNR 第\underline{\jcksNR}页$\sim$第\underline{\jcjsNR}页} &\\[0.6cm] \cline{2-3}
+                  &  \multicolumn{2}{c}{\sihao \cksmNR 第\underline{\ckksNR}页$\sim$第\underline{\ckjsNR}页} &\\[0.6cm] \hline
+
+          
+          % \multirow{2}*{\rule{0pt}{1.4cm}\parbox[b]{2.cm}{
+          % \centering 授\hfill 课\hfill 班\hfill 次\\授\hfill 课\hfill 日\hfill 期 } } & \multicolumn{2}{c}{ \skbcNR } &\\[0.6cm] \cline{2-3}
+          %                           &\multicolumn{2}{c}{ \skrqNR } &\\[0.6cm] \hline
+                
+          \multicolumn{3}{l}{
+          \begin{minipage}[t]{2.5cm}%[t][4.0cm]
+            \vspace{0pt} \hfill \heiti \sihao 教学后记：
+          \end{minipage}\hspace{0.5cm}
+          \begin{minipage}[t]{12cm}%[t][4.5cm]
+            \vspace{0pt}\sihao \jxhjNR
+          \end{minipage}
+          }\vspace{0.7cm} &\\ %\hline      
+        \end{tabular}
+        \newpage
+        \newgeometry{textwidth={\textwidth-150pt},top=2cm,bottom=2cm,right=2.5cm,includehead,includefoot,marginparsep=28pt,marginparwidth=85pt}
+        
+        \reversemarginpar \fancyhead{} \chead{\hspace{0.5cm} \kaishu
+          \yihao 教 \hspace{0.5cm} 案 \hspace{0.5cm} 内\hspace{0.5cm}
+          容}% \hspace{1cm} 纸
+        % \lhead{\boxhack \boxhackb } %边框
+        \lhead{ \biankuang}%边框
+        \xiaosi
+
+\section{ \dymcNR }
+}
+% =========================================================
+%%%% 重定义强调字体的代码
+% 解决默认强调字体是italic，此时中文会用楷体代替，
+% 在此设置为加粗，注意需要使用etoolbox宏包
+\makeatletter
+\let\origemph\emph
+\newcommand*\emphfont{\normalfont\bfseries}
+\DeclareTextFontCommand\@textemph{\emphfont}
+\newcommand\textem[1]{%
+  \ifdefstrequal{\f@series}{\bfdefault}
+    {\@textemph{\CTEXunderline{#1}}}
+    {\@textemph{#1}}%
+}
+\RenewDocumentCommand\emph{s o m}{%
+  \IfBooleanTF{#1}
+    {\textem{#3}}
+    {\IfNoValueTF{#2}
+      {\textem{#3}\index{#3}}
+      {\textem{#3}\index{#2}}%
+     }%
+}
+\makeatother 
+
+%%%% 定义提醒字体
+\newcommand{\alert}[1]{\textcolor{red}{\textbf{#1}}}
+
+%%%%% 定义引号命令
+\newcommand{\qtmark}[1]{``#1''}
+
+%%%% 定义带引号的加粗强调命令
+\newcommand{\qtb}[1]{\qtmark{\emph{#1}}}
+%%%% 定义带引号的加粗加红强调命令
+\newcommand{\qtbr}[1]{\qtmark{\emph{\alert{#1}}}}
+
+%%%% 中文破折号，据说来自清华模板
+\newcommand{\pozhehao}{\kern0.3ex\rule[0.8ex]{2em}{0.1ex}\kern0.3ex}
+
+%叉号与对号，需要用到pifont宏包
+\newcommand{\goodmark}{\textcolor{green!50!black}{\Pisymbol{pzd}{52}}}
+\newcommand{\badmark}{\textcolor{red}{\Pisymbol{pzd}{56}}}
+
+% =========================================================
+%%%% 西北农林科技大学各单位名称
+\newcommand{\nwsuaf}{西北农林科技大学}
+\newcommand{\cie}{信息工程学院}
+\newcommand{\ca}{农学院}
+\newcommand{\cpp}{植物保护学院}
+\newcommand{\ch}{园艺学院}
+\newcommand{\cast}{动物科技学院}
+\newcommand{\cvm}{动物医学院}
+\newcommand{\cf}{林学院}
+\newcommand{\claa}{风景园林艺术学院}
+\newcommand{\cnre}{资源环境学院}
+\newcommand{\cwrae}{水利与建筑工程学院}
+\newcommand{\cmee}{机械与电子工程学院}
+\newcommand{\cfse}{食品科学与工程学院}
+\newcommand{\ce}{葡萄酒学院}
+\newcommand{\cls}{生命科学学院}
+\newcommand{\cs}{理学院}
+\newcommand{\ccp}{化学与药学院}
+\newcommand{\cem}{经济管理学院}
+\newcommand{\cm}{马克思主义学院}
+\newcommand{\dfl}{外语系}
+\newcommand{\iec}{创新实验学院}
+\newcommand{\ci}{国际学院}
+\newcommand{\dpe}{体育部}
+\newcommand{\cvae}{成人教育}
+\newcommand{\iswc}{水土保持研究所}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master:"../main.tex"
+%%% End:
